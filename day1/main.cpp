@@ -35,13 +35,13 @@ private:
   unsigned acc_ = 0;
 
 public:
-  void merge(unsigned short first, unsigned short last) {
+  void merge(unsigned short first, unsigned short last) noexcept {
     unsigned tempo = first * 10 + last;
     acc_ += tempo;
-    std::cout << tempo << '\n';
+    // std::cout << tempo << '\n';
   }
 
-  const unsigned acc() { return acc_; }
+  unsigned const accumulated() { return acc_; }
 };
 
 void first_part() {
@@ -100,7 +100,6 @@ void second_part() {
             lowestFirst = {i, static_cast<unsigned short>(line[i] - '0')};
           }
           if (i >= highesLast.first) {
-            // std::cout << line[i] << " idx: " << highesLast.first << '\n';
             highesLast = {i, static_cast<unsigned short>(line[i] - '0')};
           }
         }
@@ -112,7 +111,7 @@ void second_part() {
     std::cerr << "unable to open\n";
   }
 
-  std::cout << code.acc() << '\n';
+  std::cout << code.accumulated() << '\n';
 }
 
 int main() {
