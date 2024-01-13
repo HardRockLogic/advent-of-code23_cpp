@@ -2,7 +2,6 @@
 #include <iostream>
 #include <regex>
 #include <string>
-#include <vector>
 
 int main() {
   std::ifstream file("input.txt");
@@ -17,8 +16,6 @@ int main() {
 
     while (std::getline(file, line)) {
       ++counter;
-      // std::cout << counter << '\n';
-      // std::vector<std::pair<unsigned short, std::string>> matches;
       bool adding_condition = true;
 
       auto colors_begin =
@@ -40,20 +37,9 @@ int main() {
           adding_condition = false;
           break;
         }
-        // matches.emplace_back(number_cubes, color);
       }
       if (adding_condition)
         accumulator += counter;
-      // for (auto const &[number, color] : matches) {
-      //   std::cout << number << ": " << color << "\n";
-      //   if (color == "red" && number > 12) {
-      //     break;
-      //   } else if (color == "green" && number > 13) {
-      //     break;
-      //   } else if (color == "blue" && number > 14) {
-      //     break;
-      //   }
-      // }
     }
   } else {
     std::cerr << "error opening file\n";
