@@ -10,20 +10,19 @@ if [ $# -eq 1 ]; then
   touch $1/main.cpp $1/Makefile
   
   cat <<'EOF' > $1/Makefile
-  CXX = g++
-  CXXFLAGS = -std=c++20 -Wall -Wextra
+CXX = g++
+CXXFLAGS = -std=c++20 -Wall 
 
-  SRC = main.cpp
-  EXE = main
+SRC = main.cpp
+EXE = main
 
-  all: $(EXE)
+all: $(EXE)
 
-  $(EXE): $(SRC)
-    $(CXX) $(CXXFLAGS) -o $@ $^
+$(EXE): $(SRC)
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
-  clean:
-    @rm -f $(EXE)
-    
+clean: 
+	@rm -f $(EXE)    
 EOF
 
 else 
