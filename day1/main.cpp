@@ -27,21 +27,20 @@ public:
     first_encounter_ = false;
   }
 
-  unsigned const accumulated() { return accumulator_; }
+  unsigned accumulated() const { return accumulator_; }
 };
 
 class CalibrationAccumulator {
 private:
-  unsigned acc_ = 0;
+  unsigned accumulator_ = 0;
 
 public:
   void merge(unsigned short first, unsigned short last) noexcept {
     unsigned tempo = first * 10 + last;
-    acc_ += tempo;
-    // std::cout << tempo << '\n';
+    accumulator_ += tempo;
   }
 
-  unsigned const accumulated() { return acc_; }
+  unsigned accumulated() const { return accumulator_; }
 };
 
 void first_part() {
@@ -54,7 +53,6 @@ void first_part() {
       for (char ch : line) {
         if (ch >= '0' && ch <= '9') {
           code.update_state(static_cast<unsigned>(ch - '0'));
-          // std::cout << ch << '\n';
         }
       }
       code.merge();
@@ -70,8 +68,8 @@ void first_part() {
 
 void second_part() {
   std::unordered_map<std::string, unsigned short> values{
-      {"zero", 0}, {"one", 1}, {"two", 2},   {"three", 3}, {"four", 4},
-      {"five", 5}, {"six", 6}, {"seven", 7}, {"eight", 8}, {"nine", 9}};
+      {"one", 1}, {"two", 2},   {"three", 3}, {"four", 4}, {"five", 5},
+      {"six", 6}, {"seven", 7}, {"eight", 8}, {"nine", 9}};
 
   std::ifstream file("input.txt");
   CalibrationAccumulator code;
