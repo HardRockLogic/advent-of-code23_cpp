@@ -2,7 +2,6 @@
 #include <cstddef>
 #include <fstream>
 #include <functional>
-#include <iomanip>
 #include <iostream>
 #include <string>
 #include <unordered_map>
@@ -57,9 +56,6 @@ public:
     } else {
       std::cerr << "error reading file\n";
     }
-    // for (auto const &element : symbols_) {
-    //   std::cout << element.x << ' ' << element.y << '\n';
-    // }
   }
 
   void check_for_adjecency() {
@@ -93,9 +89,6 @@ public:
     for (Coord const &coord : adjecent_coords) {
       auto result = std::find(symbols_.begin(), symbols_.end(), coord);
       if (result != symbols_.end()) {
-        // std::cout << current_number_ << '\n';
-        // current_number_.erase(current_number_.find_last_not_of(" \n\r\t") +
-        // 1);
         acc_ += std::stoul(current_number_);
         break;
       }
@@ -107,7 +100,6 @@ public:
 
   void build_number(Coord coord, char chr) {
     if (chr >= '0' && chr <= '9') {
-      // std::cout << chr << '-';
       current_number_.push_back(chr);
       current_number_coords_.push_back(coord);
 
@@ -152,9 +144,6 @@ public:
     } else {
       std::cerr << "error reading file\n";
     }
-    // for (auto const &element : stars) {
-    //   std::cout << element.x << ' ' << element.y << '\n';
-    // }
   }
 
   void check_for_adjecency() {
@@ -205,7 +194,6 @@ public:
 
   void build_number(Coord coord, char chr) {
     if (chr >= '0' && chr <= '9') {
-      // std::cout << chr << '-';
       current_number_.push_back(chr);
       current_number_coords_.push_back(coord);
 
@@ -235,8 +223,10 @@ void firts_part() {
   if (file.is_open()) {
     std::string line;
     unsigned raw = 1;
+
     while (std::getline(file, line)) {
       unsigned column = 1;
+
       for (char ch : line) {
         solution.build_number(Coord{column, raw}, ch);
         ++column;
