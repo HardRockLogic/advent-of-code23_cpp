@@ -43,7 +43,6 @@ public:
     // commin Ratio=2
     if (multiplier) {
       unsigned tempo = std::pow(2, multiplier - 1);
-      // fmt::print("{} ", tempo);
       acc_ += tempo;
     }
     count_state_ = 1;
@@ -152,11 +151,7 @@ int main() {
         | std::views::drop(2);
       // clang-format on
 
-      // fmt::print("{} \n", fmt::join(result, " "));
-
       for (auto const &token : result) {
-        // if (token.size() == 0 || token[0] == '|')
-        //   continue;
 
         std::string tempo;
         if (token.size() == 2) {
@@ -180,5 +175,5 @@ int main() {
   card.count_cards();
 
   // part2 asnwer: 6874754
-  fmt::print("Part one: {}\n", card.accumulated());
+  fmt::print("Part #: {}\n", card.accumulated());
 }
