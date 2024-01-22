@@ -1,4 +1,5 @@
 #include <array>
+#include <cstddef>
 #include <fmt/core.h>
 #include <fmt/ranges.h>
 #include <fstream>
@@ -52,13 +53,14 @@ public:
 
   bool is_valid() const { return list_of_ranges_.empty() ? false : true; }
 
+  // debug method
+  size_t get_size() const { return list_of_ranges_.size(); }
+
   u64_t search_in_ranges(u64_t value) const {
     for (DestSrcRange const &range : list_of_ranges_) {
 
-      // std::cout << "search_in_ranges call?\n";
       if (range.in_range(value)) {
         return range.get_mapped_value(value);
-        // std::cout << "happens\n";
       }
     }
     // if value doesnt match any range, returning value itself
@@ -78,7 +80,7 @@ private:
   u64_t seed_to_location(u64_t seed) {
     u64_t active_value = seed;
     for (GenericMap const &map : maps_) {
-      fmt::print("#{}, ", active_value);
+      // fmt::print("#{}, ", map.get_size());
       active_value = map.search_in_ranges(active_value);
     }
     return active_value;
@@ -126,10 +128,6 @@ int main() {
   // fmt::print("{}\n", token);
 
   while (true) {
-    // if (iss.eof()) {
-    //   break;
-    // }
-
     try {
       iss >> token;
       aggregator.seeds_.push_back(std::stoll(token));
@@ -143,6 +141,7 @@ int main() {
   GenericMap map;
   while (true) {
     if (iss.eof()) {
+      aggregator.push_map(map);
       break;
     }
 
@@ -158,6 +157,7 @@ int main() {
     } catch (const std::invalid_argument &) {
       aggregator.push_map(map);
       map = GenericMap();
+      // fmt::print("catch: {}", token);
     }
   }
 
