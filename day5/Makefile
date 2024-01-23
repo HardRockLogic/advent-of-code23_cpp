@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++20 -Wall -Wextra -lfmt
+CXXFLAGS = -std=c++20 -Wall -Wextra -lfmt# -DDEBUG
 
 SRC = main.cpp
 EXE = main

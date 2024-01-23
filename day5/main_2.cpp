@@ -10,10 +10,14 @@
 #include <string>
 #include <vector>
 
+#ifdef DEBUG
 #define LOG_VEC(x)                                                             \
   for (auto const &elem : x) {                                                 \
     std::cout << elem << '\n';                                                 \
   }
+#else
+#define LOG_VEC(x)
+#endif
 
 using u64_t = unsigned long long;
 
@@ -62,37 +66,48 @@ public:
   }
 
   std::vector<Range> get_mapped_value(Range range) const {
-    // std::cout << "range: " << range << '\n';
-    // std::cout << "src: " << src_ << '\n';
     std::vector<Range> out;
+
+    // fully fits the range
     if (in_range(range)) {
-      // std::cout << "src: " << src_ << '\n';
-      // std::cout << "range: " << range << '\n';
       out.emplace_back(range.start() + diff_, range.edge() + diff_, true);
       return out;
 
+      // chopped left (intersects on right)
     } else if (range.start() < src_.start() && range.edge() <= src_.edge() &&
                !(range.edge() < src_.start())) {
       out.emplace_back(range.start(), src_.start() - 1, false);
       out.emplace_back(dest_.start(), range.edge() + diff_, true);
       return out;
+
+      // chopped right (intersects on left)
     } else if (range.start() >= src_.start() && range.edge() > src_.edge() &&
                !(range.start() > src_.edge())) {
       out.emplace_back(range.start() + diff_, dest_.edge(), true);
       out.emplace_back(src_.edge() + 1, range.edge(), false);
       return out;
+
+      // source range fully fits input range
     } else if (range.start() < src_.start() && range.edge() > src_.edge()) {
       out.emplace_back(dest_.start(), dest_.edge(), true);
       out.emplace_back(range.start(), src_.start() - 1, false);
       out.emplace_back(src_.edge() + 1, range.edge(), false);
       return out;
+
+      // input range doesnt belong to source range
     } else {
-      // std::cout << "not aligned: " << range << '\n';
       out.push_back(range);
       return out;
     }
   }
 };
+
+// clang-format off
+void drainToFrom(std::vector<Range> &to, std::vector<Range> &from) {
+  to.insert(to.end(), std::make_move_iterator(from.begin()),
+                      std::make_move_iterator(from.end()));
+}
+// clang-format on
 
 class GenericMap {
 private:
@@ -106,37 +121,33 @@ public:
   std::vector<Range> search_in_ranges(std::vector<Range> outer_ranges) const {
 
     std::vector<Range> unmapped;
-    unmapped.insert(unmapped.end(),
-                    std::make_move_iterator(outer_ranges.begin()),
-                    std::make_move_iterator(outer_ranges.end()));
+    drainToFrom(unmapped, outer_ranges);
     std::vector<Range> output;
     std::vector<Range> mapped;
 
     for (DestSrcRange const &local_range : list_of_ranges_) {
       for (auto const &input : unmapped) {
         auto tempo = local_range.get_mapped_value(input);
-        // for (auto const &seed : tempo) {
-        //   std::cout << seed << '\n';
-        // }
-        output.insert(output.end(), std::make_move_iterator(tempo.begin()),
-                      std::make_move_iterator(tempo.end()));
+        // LOG_VEC(tempo)
+        drainToFrom(output, tempo);
       }
       unmapped.clear();
+
       for (auto &recieved : output) {
         if (recieved.mapped()) {
           recieved.reset();
           mapped.push_back(recieved);
+
         } else {
           unmapped.push_back(recieved);
         }
       }
       output.clear();
     }
-    output.insert(output.end(), std::make_move_iterator(unmapped.begin()),
-                  std::make_move_iterator(unmapped.end()));
-    output.insert(output.end(), std::make_move_iterator(mapped.begin()),
-                  std::make_move_iterator(mapped.end()));
-    // if value doesnt match any range, returning value itself
+
+    drainToFrom(output, unmapped);
+    drainToFrom(output, mapped);
+
     return output;
   }
 };
@@ -238,9 +249,9 @@ int main() {
     } catch (const std::invalid_argument &) {
       aggregator.push_map(map);
       map = GenericMap();
-      // fmt::print("catch: {}", token);
     }
   }
 
+  // part1: 240320250; part2: 28580589;
   fmt::print("{}\n", aggregator.lowest_location());
 }
