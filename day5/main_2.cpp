@@ -184,13 +184,11 @@ public:
     std::vector<Range> collection;
 
     for (Range const &seed : seeds_) {
-      // std::vector<Range> tempo = seed_to_location(seed);
       for (auto const &recieved : seed_to_location(seed)) {
         collection.push_back(recieved);
       }
     }
     for (auto const &finals : collection) {
-      // std::cout << finals << ", ";
       if (finals.start() < lowest) {
         lowest = finals.start();
       }
