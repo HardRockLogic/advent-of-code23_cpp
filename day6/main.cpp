@@ -36,7 +36,7 @@ void fillInput(vec_u32 &mills, vec_u32 &milimiters, std::ifstream &file) {
 
 unsigned countBests(vec_u32 const &mills, vec_u32 const &milimiters) {
   if (mills.size() > 4 || milimiters.size() > 4) {
-    std::cerr << "more elements that expected\n";
+    std::cerr << "more elements than expected\n";
     return 0;
   }
   std::array<unsigned, 4> results;
