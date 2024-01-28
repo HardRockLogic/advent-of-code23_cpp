@@ -51,7 +51,6 @@ unsigned countBests(vec_u32 const &mills, vec_u32 const &milimiters) {
       }
     }
     results[i] = counter;
-    // std::cout << counter;
   }
   return std::reduce(results.begin(), results.end(), 1, std::multiplies<>{});
 }

@@ -10,6 +10,7 @@
 using pair = std::pair<unsigned long long, unsigned long long>;
 using ull = unsigned long long;
 
+// Parsing
 void fillInput(pair &time_dist, std::ifstream &file) {
   std::string line;
   std::getline(file, line);
@@ -33,7 +34,7 @@ void fillInput(pair &time_dist, std::ifstream &file) {
   time_dist.second = std::stoull(holder);
 }
 
-ull countBests(pair const &time_dist) {
+ull countBest(pair const &time_dist) {
   ull counter = 0;
   ull ms = time_dist.first;
   ull mm = time_dist.second;
@@ -55,5 +56,5 @@ int main() {
   pair time_dist;
   fillInput(time_dist, file);
   LOG_PAIR(time_dist);
-  std::cout << countBests(time_dist) << '\n';
+  std::cout << countBest(time_dist) << '\n';
 }

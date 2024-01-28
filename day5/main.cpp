@@ -157,7 +157,6 @@ int main() {
     } catch (const std::invalid_argument &) {
       aggregator.push_map(map);
       map = GenericMap();
-      // fmt::print("catch: {}", token);
     }
   }
 
