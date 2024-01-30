@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++20 -Wall -Wextra # -DDEBUG
+CXXFLAGS = -O3 -std=c++20 -Wall -Wextra # -DDEBUG
 
 SRC = main.cpp
 EXE = main
@@ -16,4 +16,4 @@ $(EXE2): $(SRC2)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 clean: 
-	@rm -f $(EXE)    
+	@rm -f $(EXE) $(EXE2)    
